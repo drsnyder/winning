@@ -12,13 +12,16 @@ computeReturnsOverTime <- function(v, startingPoint) {
   returnsOverTime
 }
 
-start <- data[data$Year>1926,]
+start <- data[data$Year>1974,]
 
-start$investOverTime <- computeReturnsOverTime(start$SP500, 1)
+start$investOverTime <- computeReturnsOverTime(start$SP500, 329000)
+start = start[!is.na(start$investOverTime),]
 
-ggplot(start, aes(x=Year, y=investOverTime)) + geom_line() +
-  scale_x_continuous(breaks = seq(min(data$Year), max(data$Year), 3)) +
-  scale_y_continuous(breaks = round(seq(min(data$investOverTime), max(data$investOverTime), 30), 0)) +
+ggplot(start, aes(x=Year, y=investOverTime)) + geom_bar(stat="identity") +
+ scale_x_continuous(breaks = seq(min(start$Year), max(start$Year), 3)) +
+  scale_y_continuous(breaks = round(seq(min(start$investOverTime), max(start$investOverTime), 1000000), 0)) +
+  xlab("year") + ylab("value") +
   theme(axis.text.x = element_text(angle = 90))
+ggsave("plots/329k-starting-in-70s.png")
 
 
